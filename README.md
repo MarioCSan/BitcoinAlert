@@ -1,6 +1,7 @@
 # Silicon Valley Bitcoin Alert
 <img src="gilfoyle.jpg" title="Silicon Valley Bitcoin Alert">
-<img src="update.png" title="Console Output">
+![image](https://github.com/user-attachments/assets/f5cda917-eae2-4627-af81-ab1093b7e163)
+
 
 # Gilfoyle-Bitcoin-Alert : <small>Bitcoin is Really Volatile Today</small>
 
