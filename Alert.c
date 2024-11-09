@@ -3,15 +3,21 @@
 #include <string.h>
 #include <unistd.h>
 
+#ifdef __linux__
+#include <alsa/asoundlib.h>  
+#elif __APPLE__
+#include <CoreServices/CoreServices.h>  
+#endif
+
 #ifdef _WIN32
 #include <windows.h>
 #include <mmsystem.h>
-#define SOUND_COMMAND "You-Suffer.wav"  // Archivo de sonido para Windows
+#define SOUND_COMMAND "You-Suffer.wav"  
 #else
-#define SOUND_COMMAND "afplay You-Suffer.wav"  // Comando para macOS
+#define SOUND_COMMAND "afplay You-Suffer.wav"  
 #endif
 
-// Umbral para el precio de Bitcoin
+
 #define PRICE_THRESHOLD 66767
 
 #define API_KEY "7350a73c-9677-4d06-bba3-665d50999607"
