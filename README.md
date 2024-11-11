@@ -27,7 +27,7 @@ This programme is designed to work on Windows, macOS, and Linux.
 ### Installation
 1. Ensure `curl` is installed on your system, as the programme uses it to make HTTP requests.
 2. Clone this repository.
-3. Compile and run the `.c` file in your environment.
+3. Compile and run the `.c` file in your environment or download the exe (if you use Windows)
 
 ### Compilation and Execution
 To compile and run on a UNIX-based system (macOS or Linux):
