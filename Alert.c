@@ -3,23 +3,15 @@
 #include <string.h>
 #include <unistd.h>
 
-#ifdef __linux__
-#include <alsa/asoundlib.h>  
-#elif __APPLE__
-#include <CoreServices/CoreServices.h>  
-#endif
-
 #ifdef _WIN32
 #include <windows.h>
 #include <mmsystem.h>
 #define SOUND_COMMAND "You-Suffer.wav"  
 #else
-#define SOUND_COMMAND "afplay You-Suffer.wav"  
+#define SOUND_COMMAND_MACOS "afplay ./You-Suffer.wav"  
 #endif
 
-
 #define PRICE_THRESHOLD 66767
-
 #define API_KEY "7350a73c-9677-4d06-bba3-665d50999607"
 
 double get_bitcoin_price() {
@@ -53,35 +45,24 @@ void play_alert_song() {
 #ifdef _WIN32
     if (PlaySound(SOUND_COMMAND, NULL, SND_FILENAME | SND_ASYNC) == 0) {
         printf("Cannot reproduce sound: %lu\n", GetLastError());
-    } else {
-        printf("Playing sound on Windows\n");
-    }
+    } 
 #elif __APPLE__
-    int result = system(SOUND_COMMAND);  // afplay para macOS
-    if (result != 0) {
-        printf("Cannot reproduce sound on macOS.\n");
-    } else {
-        printf("Playing sound on macOS\n");
-    }
+    int result = system(SOUND_COMMAND_MACOS);
 #else
-    int result = system("aplay You-Suffer.wav");  // aplay para Linux
-    if (result != 0) {
-        printf("Cannot reproduce sound on Linux.\n");
-    } else {
-        printf("Playing sound on Linux\n");
-    }
+    int result = system("aplay You-Suffer.wav");
 #endif
 }
 
 int main() {
+    double highest_price = PRICE_THRESHOLD;
+
     while (1) {
         double price = get_bitcoin_price();
-        double highest_price = PRICE_THRESHOLD; 
+
         if (price > 0) {
             printf("Bitcoin price: $%.2f\n", price);
             if (price < PRICE_THRESHOLD) {
                 printf("Alert! Bitcoin price is below $%d.\n", PRICE_THRESHOLD);
-                //play_alert_song();
             } else if (price > highest_price) {
                 printf("Alert! New ATH $%.2f\n", price);
                 play_alert_song();
@@ -91,7 +72,7 @@ int main() {
             printf("Cannot obtain BTC price\n");
         }
         
-        sleep(60);
+        sleep(60);  
     }
     return 0;
 }
