@@ -13,7 +13,6 @@
 #ifdef _WIN32
 #define SOUND_COMMAND SOUND_FILE_NAME
 #else
-// SOUND_COMMAND_MACOS will be removed, command constructed in function
 #endif
 
 #define PRICE_THRESHOLD 66767
