@@ -27,11 +27,38 @@ This programme is designed to work on Windows, macOS, and Linux.
 ### Installation
 1. Ensure `curl` is installed on your system, as the programme uses it to make HTTP requests.
 2. Clone this repository.
-3. Compile and run the `.c` file in your environment or download the exe (if you use Windows)
+3. Compile and run the `Alert.c` file.
 
-### Compilation and Execution
-To compile and run on a UNIX-based system (macOS or Linux):
+## Compiling and Running
 
+This program uses platform-specific features for playing sound.
+
+### Dependencies
+- **Windows:** No special dependencies beyond a C compiler (e.g., MinGW or MSVC).
+- **macOS:** Requires `afplay` (standard macOS utility).
+- **Linux:** Requires `aplay` (part of ALSA utils, usually available, e.g., `sudo apt-get install alsa-utils` on Debian/Ubuntu).
+
+### Compilation
+You can compile `Alert.c` using a standard C compiler like GCC:
 ```bash
-gcc bitcoin_alert.c -o bitcoin_alert
-./bitcoin_alert
+gcc Alert.c -o alert 
+```
+On Windows, if you are using MinGW, you might need to link against the multimedia library:
+```bash
+gcc Alert.c -o alert.exe -lwinmm
+```
+
+### Running the Program
+**Important:** The sound file `You-Suffer.wav` must be in the same directory as the compiled `alert` (or `alert.exe`) executable when you run it.
+
+To run the program:
+```bash
+./alert
+```
+Or on Windows:
+```bash
+alert.exe
+```
+
+The program will fetch the Bitcoin price every 60 seconds. If the price surpasses the previously recorded highest price (initially $66767), it will play the `You-Suffer.wav` sound.
+Error messages will be printed to the console if the sound file cannot be played.
