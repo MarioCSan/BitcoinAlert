@@ -6,9 +6,14 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <mmsystem.h>
-#define SOUND_COMMAND "You-Suffer.wav"  
+#endif
+
+#define SOUND_FILE_NAME "You-Suffer.wav"
+
+#ifdef _WIN32
+#define SOUND_COMMAND SOUND_FILE_NAME
 #else
-#define SOUND_COMMAND_MACOS "afplay ./You-Suffer.wav"  
+// SOUND_COMMAND_MACOS will be removed, command constructed in function
 #endif
 
 #define PRICE_THRESHOLD 66767
@@ -43,13 +48,23 @@ double get_bitcoin_price() {
 
 void play_alert_song() {
 #ifdef _WIN32
-    if (PlaySound(SOUND_COMMAND, NULL, SND_FILENAME | SND_ASYNC) == 0) {
-        printf("Cannot reproduce sound: %lu\n", GetLastError());
+    if (PlaySound(SOUND_COMMAND, NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT) == 0) {
+        printf("Error playing sound file '%s'. Windows Error Code: %lu\n", SOUND_FILE_NAME, GetLastError());
     } 
 #elif __APPLE__
-    int result = system(SOUND_COMMAND_MACOS);
-#else
-    int result = system("aplay You-Suffer.wav");
+    char mac_command[256];
+    sprintf(mac_command, "afplay \"%s\"", SOUND_FILE_NAME);
+    int result = system(mac_command);
+    if (result != 0) {
+        printf("Error playing sound file '%s' using afplay. Exit code: %d\n", SOUND_FILE_NAME, result);
+    }
+#else // Linux
+    char linux_command[256];
+    sprintf(linux_command, "aplay \"%s\"", SOUND_FILE_NAME);
+    int result = system(linux_command);
+    if (result != 0) {
+        printf("Error playing sound file '%s' using aplay. Exit code: %d\n", SOUND_FILE_NAME, result);
+    }
 #endif
 }
 
